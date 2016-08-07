@@ -1,0 +1,51 @@
+\documentclass{article}
+
+\usepackage{amssymb}
+\usepackage{fullpage}
+
+
+\author{Lucas Roberts}
+\date{\today}
+\begin{article}
+\maketitle
+
+\section{Introduction}
+
+Researchers should use zero-inflated models when modeling count data. Why? 
+
+\begin{list}
+
+\item Models encompass traditional count data models as special cases and account for excess zeros common in nematology. 
+
+\item Readily available-and often free-software has ready made codes to fit zero-inflated models. 
+
+\item Using Poisson based models when zero-inflation is present leads to biased estimates and larger mean squared errors.   
+
+\end{list}
+
+\section{Estimation challenges}
+
+The Bias of an estimator is defined as the expected value of the estimator minus the parameter to be estimated. In the case of coun data often the researcher wants to know the rate parameter which indicates an average number of nematodes per unit of soil volume. Let the rate parameter be denoted $\lambda$ and the zero inflation probability be denoted $\phi$. Then if the researchers use the common average of the count data, denoted $\bar{y}$ then the expected value of this estimator is 
+
+\begin{equation}
+\mathbb{E}(\bar{y}} = (1-\phi)\lambda.
+\end{equation}
+
+Thus the bias of the estimate is 
+
+\begin{equation}
+\mathbb{E}(\bar{y}) - \lambda = -\phi\lambda,
+\end{equation}
+so that the larger the zero-inflation or the rate parameter, the larger the bias of the estimate. Other common approaches are to add 1 to each observed count. If the counts are indeed Poisson distributed, the resultant random variable is a size-biased Poisson. Regardless of the underlying distribution the rate estimate will now be biased by 1. to remove this bias you may safely subtract unity from the final estimate. This does not solve the problem of excess zeroes. Finally, some authors prefer to use a transformed version of the count with a 1 added, some examples are $log(y+1)$ or $\sqrt{2(y+1)}$. Both lead to biased estimators of the underlying rate. The second transform which uses a squared root, has roots in the variance stabilization literature and would be reasonable if the underlying counts are Poisson distributed.  
+
+
+Mean squared error
+
+\section{Model determination: Poisson or ZIP?}
+
+
+\section{Discussion}
+
+
+
+\end{article}
