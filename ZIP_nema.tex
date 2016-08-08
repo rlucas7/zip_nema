@@ -4,6 +4,9 @@
 \usepackage{fullpage}
 \usepackage{float}
 \usepackage{algorithmicx, algorithm}
+\usepackage{graphicx}
+
+\graphicspath{{figs/}}
 \author{Lucas Roberts}
 \date{\today}
 \begin{document}
@@ -58,13 +61,14 @@ The likelihood ratio (LR) test statistic is constructed by taking twice the loga
 \end{equation}
 where the zero degree of freedom chi-squared random variable is interpreted as a point mass at zero. To illustrate this phenomena to the reader we generate Figure \ref{fig:twice_log_likelihood} which displays the results of $10,000$ random draws from a zero-inflated Poisson distribution with $\phi=0.36788$ and rate parameter $\lambda=5$. 
 We form the LR test statistic by comparing a Poisson likelihood and a zero-inflated Poisson likelihood and taking twice the logarithm of the difference of the two. The bold line displays the  theoretical distribution which contains a point mass at zero and a chi-squared density on the positive axis. This has implications for the nematologist who is testing whether to use a ZIP model versus a Poisson model, the test statistic p-value may be calculated exactly by calculating one-half the upper tail of a chi-squared distribution with 1 degree of freedom, unless the LR test statistic is zero in which case the p-value is 1. 
-
 \begin{figure}[H]
 \label{fig:twice_log_likelihood}
 \vspace{0.5in}
-\centering{\mbox{figure about here}}
-\vspace{0.5in}
+\begin{center}
+\includegraphics[scale=0.6]{hist.pdf}
+\end{center}
 \end{figure}
+
 
 \section{An algorithm for estimating $\phi$ and $\lambda$ with no covariates}
 
@@ -73,15 +77,17 @@ In this section we detail an algorithm for estimating the two parameters of a ZI
 \begin{algorithm}
 \caption{Calculate $\hat{\phi}$ and $\hat{\lambda}$}
 \label{EM_algo}
-\begin{algorithmic}
-\State $w_i \leftarrow U_i$
+\begin{algorithmic}[1]
+\For{$i \gets 1, n$}\\
+	\State $w_i \gets U_i$
+\EndFor
 \end{algorithmic}
 \end{algorithm}
 
 A spreadsheet to accompany the manuscript is available to illustrate the necessary calculations as well as provide a working template for the nematologist. The spreadsheet is titled \texttt{phi\_lambda\_calc.xlsx} and is available in the supplementary material on the journal website. 
 
 \section{Discussion}
-In this brief research note we discussed the zero-inflated distributions and several statistical and scientific implications of nematocysts using the standard statistical techniques when modeling nematode abundance with count data. 
+In this brief research note we discussed the zero-inflated distributions and several statistical and scientific implications of nematodes using the standard statistical techniques when modeling nematode abundance with count data. We argue that all nematologists should be familiar with zero-inflated models and use these methods in place of the standard classical statistics to estimate rates of nematodes in soil volume data. Moreover we stressed the computational aspects of these methods as well as the statistical nuances of the methods. Finally we provided an algorithm to estimate the rate of nematodes under a zero-inflated model and the zero-inflation probability component as well as provided a spreadsheet with calculations ready programmed for the researcher to modify as needed for their nematode abundance data. 
 
 
 \end{document}

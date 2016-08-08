@@ -30,5 +30,9 @@ xi[i] <- 2*(zip-l_pois)
 }
 xi[xi<0] <- 0
 
+pdf(file='hist.pdf')
 hist(xi, breaks=25, prob=TRUE, main='LR samples', xlab=expression(xi), ylab=expression(Pr(Xi<xi)))
 lines(dchisq(1:50, 1, ncp = 0), type='l')
+dev.off()
+
+getwd() # tells you where the machine just put the file
