@@ -32,7 +32,9 @@ xi[xi<0] <- 0
 
 pdf(file='hist.pdf')
 hist(xi, breaks=25, prob=TRUE, main='LR samples', xlab=expression(xi), ylab=expression(Pr(Xi<xi)))
-lines(dchisq(1:50, 1, ncp = 0), type='l')
+seq_line <- dchisq(seq(0,35, by=1), 1, ncp = 0)/2
+seq_line[1] <- 0.5
+lines(seq_line, type='l')
 dev.off()
 
 getwd() # tells you where the machine just put the file

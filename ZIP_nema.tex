@@ -11,10 +11,13 @@
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
 
+\newcommand\eqdist{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny d}}}{=}}}
+
+
 
 \graphicspath{{figs/}}
-\author{Lucas Roberts}
-\date{\today}
+%\author{Lucas Roberts}
+%\date{\today}
 \begin{document}
 \title{
 Why nematologists should use zero-inflated models when modeling count data. (And how to use them)
@@ -23,7 +26,13 @@ Why nematologists should use zero-inflated models when modeling count data. (And
 \maketitle
 
 \section{Introduction}
+Counts of nematodes, abundance measures, and rates within a unit volume of soil are all common count measures of nematodes. The method of counting after elutriation is time consuming but conceptually straightforward for the researcher. In our own work \cite{} we have found count models of nematodes as well as root count measures in vineyards to be inadequate statistical models in most observed data. The count data are often observed with a high prevalence of zeroes, indeed often beyond the frequency of zeroes suggested by the Poisson model itself. In cases with excess zeroes the use of a Poisson model is inadequate to describe the data. Zero-inflated models offer an alternative that accounts for the excess zeroes observed as well as providing additional over dispersion flexibility. Recall, a distribution is called over-dispersed if the variance exceeds the mean, $\sigma^2 > \mu$. 
 
+In many cases nematologists, and scientists in general use the Poisson model not because it is appropriate for the observed data but because the scientist is familiar with the modeling approach of calculating sample means. This article is meant to bring the zero-inflated models to the attention of scientists modeling count data and point out the pitfalls of using traditional methods in the presence of excess zero counts. The use of zero inflated models is common in other scientific disciplines such as (cite list\cite{}) and has been seen in the analysis of nematode count data by Murray et al. \cite{murray2011modeling}. Murray mention that the zero-inflation might come not from the lack of nematodes but from the symbiotic relation certain species of nematodes have with the root system, once the nematode embeds in the root system there is no ability to measure the organism. The only time the organism may be measured is when recently-hatched pre-parasitic second stage juveniles (SRKN-J2) are detectable in soil prior to host invasion.
+
+There are readily available software for fitting zero-inflated models. We provide a table of common statistical software to fit zero-inflated models and compare relevant aspects of these software. Moreover, for the scientist who prefers to `cook their own' statistics we also provide a spreadsheet in an appendix at the publisher's website so that the scientist may perform the calculations on simplified zero-inflated Poisson models themselves. Also the spreadsheet serves as an instructional aid, the scientist may study the formulae and calculations to ensure their understanding of the model and resulting calculations.  
+
+Beyond the statistical aspects of zero-inflated models of count data there are very important scientific considerations for using these models, not the least of which is that the failure to use zero-inflated models when the data are in fact zero-inflated leads to bias in the reported rates of nematodes per unit volume of soil. The reported rate estimates under the traditional models will be underestimated and may cause a grower to fail to act when in fact the should make efforts to control their nematode population by perhaps cleansing field tools before moving from one area to another in the field and other mitigation methods beyond methyl bromide outlined by Zasada et al. \cite{zasada2010managing}.  Additionally, the scientist might think that as long as they collect a sufficient number of samples the bias from mis-specifying the Poisson model will be negligible, we show this is not the case and in fact the larger the underlying rate of nematodes the larger the error in estimation. 
 
 \begin{itemize}
 \item Models encompass traditional count data models as special cases and account for excess zeros common in nematology. 
@@ -55,18 +64,18 @@ For the average as an estimator of the rate the MSE is
 \begin{equation}
 MSE(\bar{y}, \lambda) = \phi^2\lambda^2 + \frac{ \lambda(1-\phi) +\lambda^2(1-\phi)\phi}{n}.
 \end{equation}
-This last equation tells us that even with an infinite number of samples ($n \to \infty$) unless the zero-inflation is non-existent, there will be a bias proportional to the rate and the traditional methods will be suboptimal to use in place of estimators of zero-inflated data generating processes. The preceding portion of this section has discussed the statistical estimation of rates for data which is truly zero-inflated, in practice of course we never know for certain whether the data is truly zero-inflated or not and we must rely on statistical tests to make this determination. The next section discusses the methods to use to make this determination as well as the statistical nuances of these procedures.
+This last equation tells us that even with an infinite number of samples ($n \to \infty$) unless the zero-inflation is non-existent, there will be a bias proportional to the rate and the traditional methods will be suboptimal to use in place of estimators of zero-inflated data generating processes. The preceding portion of this section has discussed the statistical estimation of rates for data which are truly zero-inflated, in practice we never know for certain whether the data is truly zero-inflated or not and we must rely on statistical tests to make this determination. The next section discusses the methods to use to make this determination as well as the statistical nuances of these procedures.
  
 \section{Model determination: Poisson or ZIP?}
-There are two commonly used methods to determine whether the count data you are modeling is from a zero-inflated distribution or not: the likelihood ratio test and the Vuong test \cite{vuong1989likelihood}.  
-There is a fair amount of disagreement within the scholarly community about whether to use the Vuong test or the likelihood ratio test \cite{wilson2015misuse}. As near as we can tell, the Vuong test is appropriate when comparing two zero-inflated regression models and the likelihood ratio test method is appropriate when comparing a Poisson model against a zero-inflated model. We will first discuss the likelihood ratio test and then the Vuong test. 
+There are two commonly used methods to determine whether the count data you are modeling is from a zero-inflated distribution or not: the likelihood ratio (LR) test and the Vuong test \cite{vuong1989likelihood}.  
+There is a fair amount of disagreement within the scholarly community about when to use the Vuong test or the LR test \cite{wilson2015misuse}. Notwithstanding these disputes, the Vuong test is actually a class of tests that are appropriate when comparing two zero-inflated regression models that may or may not be nested. We will not detail the Vuong test for reasons of scope but the interested reader is referred to the paper by Vuong (cited above)) as well as the two econometrics textbooks \cite{2005estimation,davidson1995estimation}. The likelihood ratio test method is appropriate when comparing a Poisson model against a zero-inflated model. We will first discuss the likelihood ratio test and then the Vuong test. 
 
-The likelihood ratio (LR) test statistic is constructed by taking twice the logarithm of the ratio of the likelihood under the unconstrained model to the likelihood under the model constrained by the null hypothesis. The standard results in statistics, applying a second order taylor series and taking limits, implies that this statistic will be asymptotically distributed as a chi-squared distribution. In our case of making a determination between a model with and one without zero-inflation the likelihood ratio test will not converge to the standard distribution in the statistical literature because the zero-inflation parameter lies on the boundary ($\phi=0$) of the parameter space \cite{chernoff1954distribution,feng1992statistical,self1987asymptotic}. The case when the likelihood ratio statistic has a parameter on the boundary of the parameter space is a well studied and understood problem within statistics that occurs in other models as well such as a mixed effect model when you want to test whether one of the variance components is 0 or not \cite{crainiceanu2004likelihood}. The traditional results state that the distribution of the LR test statistic has a point mass mixture distribution with probability one-half at the zero point and then other half is spread over a chi-squared distribution with a single degree of freedom. Formally twice the log-likelihood random variable, denoted $\xi$ is distributed 
+The likelihood ratio (LR) test statistic is constructed by taking twice the logarithm of the ratio of the likelihood under the unconstrained model to the likelihood under the model constrained by the null hypothesis. The standard results in statistics, applying a second order taylor series and taking limits, implies that this statistic will be asymptotically distributed as a chi-squared distribution. In our case of making a determination between a model with and one without zero-inflation the likelihood ratio test will not converge to the standard distribution in the statistical literature because the zero-inflation parameter lies on the boundary ($\phi=0$) of the parameter space \cite{chernoff1954distribution,feng1992statistical,self1987asymptotic}. The case when the likelihood ratio statistic has a parameter on the boundary of the parameter space is a well studied and understood problem within statistics that occurs in other models as well, such as a mixed effect model when you want to test whether one of the variance components is 0 or not \cite{crainiceanu2004likelihood}. The traditional results state that the distribution of the LR test statistic has a point mass mixture distribution with probability one-half at the zero point and then other half is spread over a chi-squared distribution with a single degree of freedom. Formally twice the log-likelihood random variable, denoted $\xi$ is distributed 
 
 \begin{equation}
-\xi = \frac{\chi^2_0}{2} + \frac{\chi^2_1}{2},
+\xi \eqdist \frac{\chi^2_0}{2} + \frac{\chi^2_1}{2},
 \end{equation}
-where the zero degree of freedom chi-squared random variable is interpreted as a point mass at zero. To illustrate this phenomena to the reader we generate Figure \ref{fig:twice_log_likelihood} which displays the results of $10,000$ random draws from a zero-inflated Poisson distribution with $\phi=0.36788$ and rate parameter $\lambda=5$. 
+where the zero degree of freedom chi-squared random variable is interpreted as a point mass at zero. To illustrate this phenomena to the reader we generate Figure \ref{fig:twice_log_likelihood} which displays the results of $10,000$ random draws from a zero-inflated Poisson distribution with $\phi=0.36788$ and rate parameter $\lambda=1$. 
 We form the LR test statistic by comparing a Poisson likelihood and a zero-inflated Poisson likelihood and taking twice the logarithm of the difference of the two. The bold line displays the  theoretical distribution which contains a point mass at zero and a chi-squared density on the positive axis. This has implications for the nematologist who is testing whether to use a ZIP model versus a Poisson model, the test statistic p-value may be calculated exactly by calculating one-half the upper tail of a chi-squared distribution with 1 degree of freedom, unless the LR test statistic is zero in which case the p-value is 1. Table \ref{tab:table1} gives the critical values of the distribution for various common type 1 error rates. 
 
 \begin{figure}[H]
@@ -86,12 +95,12 @@ We form the LR test statistic by comparing a Poisson likelihood and a zero-infla
 \cline{1-2}
 P-value & Critical value $\xi$ \\
 \hline
-0.001 & \\
-0.01 & \\
-0.025 &\\
-0.05 &\\
-0.1 &\\
-0.25 &\\
+0.001 & 9.549536\\
+0.01 &5.411894 \\
+0.025 &3.841459\\
+0.05 &2.705543\\
+0.1 &1.642374\\
+0.25 & 0.454936\\
 \hline
 \end{tabular}
 \end{center}
@@ -131,7 +140,7 @@ In this section we detail an algorithm for estimating the two parameters of a ZI
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-The Algorithmic description is a formal way of stating the algorithm which in essence involves iterating the calculations on lines 9 and 11 and update after an initialization. For initial values of $\phi^0, \lambda^0$, and $\vec{z}$ I suggest random uniform numbers between 0 and 1 for all three. Note that all final values output by the algorithm will be between 0 and 1 except for $\lambda^t$ which may be any positive value. 
+The Algorithmic description is a formal way of stating the algorithm which in essence involves iterating the calculations on lines 9 and 11 and update after an initialization. For initial values of $\phi^0, \lambda^0$, and $\vec{z}$ I suggest random uniform numbers between 0 and 1 for all three. Note that all final values output by the algorithm (e.g $z_i$ and $\phi^t$) will be between 0 and 1 except for $\lambda^t$ which may be any positive value. Although a while loop is formally used in the algorithm often iterating for $t=10$ is sufficient for reasonable settings of numerical accuracy. 
 
 A spreadsheet to accompany the manuscript is available to illustrate the necessary calculations as well as provide a working template for the nematologist. The spreadsheet is titled \texttt{phi\_lambda\_calc.xlsx} and is available in the supplementary material on the journal website. 
 
