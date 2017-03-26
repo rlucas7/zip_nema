@@ -125,43 +125,6 @@ P-value & Critical value $\xi$ \\
 \label{tab:table1}
 \end{table}
 
-\section{An algorithm for estimating $\phi$ and $\lambda$ with no covariates}\label{sec:algo}
-
-In this section we detail an algorithm for estimating the two parameters of a ZIP model that is readily programmable within a spreadsheet with basic arithmetic calculations. Although the algorithm contains a while loop that is potentially infinite, in our experience the number of iterations until the algorithm converges is typically no more than 20. Moreover, the calculations required in each iteration are readily programmed so that the researcher may apply the technique to various data via copy and paste to mimic the iterations of the while loop. The algorithm follows: 
-
-\begin{algorithm}
-\caption{ZIP EM algorithm}\label{alg:zip_em}
-\begin{algorithmic}[1]
-\Procedure{ZIP EM}{$\phi^0,\lambda^0, \varepsilon, \vec{y}, \vec{w}$}
-\For{$i \gets 1, n$}
- 	\If{$y_i =0$}
-  		\State $w_i \gets (1+\exp[-\lambda_i^0 -\textnormal{log}(\phi_i^0/(1-\phi_i^0))])^{-1}$ 
-	\Else 
-  		\State $w_i \gets 0$ 
- 	\EndIf
-\EndFor
-\State $t \gets 1$
-\While{$\varepsilon > \vert\phi^t - \phi ^{t-1}\vert$ and $\varepsilon > \vert\lambda^t - \lambda^{t-1}\vert$}
-\State $\phi^t \gets \sum_{i=1}^nw_i/n $\\
-\State $\lambda^t \gets \sum_{i=1}^n(1-w_i)y_i /\left(\sum_{i=1}^n(1-w_i)\right) $\\
-\For{$i \gets 1, n$}
- 	\If{$y_i =0$}
-  		\State $w_i \gets (1+\exp[-\lambda_i^t -\textnormal{log}(\phi_i^t/(1-\phi_i^t))])^{-1}$ 
-	\Else 
-  		\State $w_i \gets 0$ 
- 	\EndIf
-\EndFor
-
-\State $t\gets t+1$\\
-\EndWhile
-\State \textbf{return} $\phi^t, \lambda^t$\Comment{The EM algorithm (MLE) estimates}\\
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-The algorithmic description is a formal way of stating the procedure to get the estimates which in essence involves iterating the calculations on lines 9 and 11 and updating the weights ($w_i$) in lines 15 and 17 after a first initialization of the relevant values. For initial values of $\phi^0, \lambda^0$, and $\vec{z}$, we suggest random uniform numbers between 0 and 1 for all three. Note that final values output by the algorithm for $w_i$ and $\phi^t$ will be between 0 and 1 while $\lambda^t$ may be any positive value. Although a while loop with a stopping condition on the successive estimates of the rate and zero-inflation parameters is formally used in the algorithm, often replacing the stopping conditions with $t<10$ or another sufficiently large whole number of iterations is sufficient for many reasonable settings of numerical accuracy ($\varepsilon$). 
-
-A spreadsheet to accompany the manuscript is available to illustrate the necessary calculations as well as provide a working template for the nematologist. The spreadsheet is titled \texttt{zip\_calcs.xlsx} and is available in the supplementary material. In the spreadsheet we use a two significant digit stopping rule and we also calculate the score statistic. The data provided in the spreadsheet are simulated Poisson variates so the score statistic has a large pvalue indicating evidence in favor of the null hypothesis that the data are distributed Poisson. Nonetheless, for illustrative purposes we proceed with the zero-inflated Poisson algorithm calculations so that the reader may study the calculation procedure. Also this example provides evidence that the algorithm provides a reasonable answer in the case of Poisson data, a small ($\phi \approx 0.03$) zero inflation estimate. 
-
 \subsection{Numerical Example} 
 
 In this section we present the calculation of the score statistic to determine zero-inflation status and then use the test outcome to determine the method of estimating the rate and-if applicable-the zero-inflation probability. 
@@ -224,7 +187,7 @@ for ring nematodes.
 
 Note that the differences here under the Poisson and the Zero-inflated Poisson models for ring species is substantial whereas for stunt nematodes the empirical bias is subtle. This matches the intuition that the larger the number of zeroes in the count data, the larger the bias. In the cases of stunt nematodes the increase in the amount rate parameter ($\lambda$) will impact the bias was more than offset by the decrease in the proportion of zeroes ($\phi$). 
 
-\section{Comparison of ZIP regression software}\label{sec:zip_soft}
+\subsection{Comparison of ZIP regression software}\label{sec:zip_soft}
 There are several commercially available and freely available versions of software routines to provide coefficient estimates in the case that you have covariate information on your nematode count measurements. One common example might be the type of ground cover or cover crop present on the soil sample that is elutriated to get the nematode counts. These covariate measurements might commonly occur in vineyard experimental designs as well as lab studies or from typical viticultural production practices. Table \ref{tab:software} displays the various common software packages used for statistical analysis and whether these software contain routine(s) for fitting zero-inflated regression models. 
 
 \begin{table}
@@ -249,10 +212,62 @@ SPSS & Y &  & & && \$ \\
 \caption{A comparison of common statistical software for zero-inflated Poisson analysis. }
 \end{table}
 
+\section{Examples}\label{sec:examples}
+In this section we present three examples of nematode data to illustrate the numerical differences in conclusions when analyzing nematode data. The first data are a collection of aggregate data collected by Noah Adamo while working on his dissertation at Virginia Tech. These data are aggregated from multiple measurements within a particular vineyard area. 
+
+\subsection{Virginia Vineyard data}
+
+\subsection{Jon Eisenbecks data}
+
+\subsection{Other data}
+
+
 \section{Discussion}\label{sec:disc}
 In this brief research note we discussed the zero-inflated distributions and several statistical and scientific implications of modeling nematode abundance using standard statistical techniques with count data. We argue that nematologists should be familiar with zero-inflated models and use these methods in place of the sample mean statistic to estimate rates of nematodes in soil volume data where appropriate. 
 
-We provided a score test statistic for the researcher to decide between a Poisson or a ZIP model for a collection of observations. The score test may be used both whether covariates are available or not. When deciding between two competing ZIP regression models with non-nested covariate structure the Vuong test should be used. Moreover, we stressed both the theoretical and computational aspects of these methods as well as statistical nuances of the methods. Finally, we provided an algorithm to estimate the rate of nematodes and the zero-inflation probability component under a zero-inflated Poisson model. Additionally, we provided a spreadsheet with calculations ready programmed for the researcher to modify as needed for their nematode abundance data analysis.
+We provided a score test statistic for the researcher to decide between a Poisson or a ZIP model for a collection of observations. The score test may be used both whether covariates are available or not. When deciding between two competing ZIP regression models with non-nested covariate structure the Vuong test should be used. Moreover, we stressed both the theoretical and computational aspects of these methods as well as statistical nuances of the methods. Finally, we provided an algorithm to estimate the rate of nematodes and the zero-inflation probability component under a zero-inflated Poisson model. Additionally, we provided a spreadsheet with calculations ready programmed for the researcher 
+to modify as needed for their nematode abundance data analysis.
+
+\appendix 
+\section{An algorithm for estimating $\phi$ and $\lambda$ with no covariates}\label{sec:algo}
+
+In this section we detail an algorithm for estimating the two parameters of a ZIP model that is readily programmable within a spreadsheet with basic arithmetic calculations. Although the algorithm contains a while loop that is potentially infinite, in our experience the number of iterations until the algorithm converges is typically no more than 20. Moreover, the calculations required in each iteration are readily programmed so that the researcher may apply the technique to various data via copy and paste to mimic the iterations of the while loop. The algorithm follows: 
+
+\begin{algorithm}
+\caption{ZIP EM algorithm}\label{alg:zip_em}
+\begin{algorithmic}[1]
+\Procedure{ZIP EM}{$\phi^0,\lambda^0, \varepsilon, \vec{y}, \vec{w}$}
+\For{$i \gets 1, n$}
+ 	\If{$y_i =0$}
+  		\State $w_i \gets (1+\exp[-\lambda_i^0 -\textnormal{log}(\phi_i^0/(1-\phi_i^0))])^{-1}$ 
+	\Else 
+  		\State $w_i \gets 0$ 
+ 	\EndIf
+\EndFor
+\State $t \gets 1$
+\While{$\varepsilon > \vert\phi^t - \phi ^{t-1}\vert$ and $\varepsilon > \vert\lambda^t - \lambda^{t-1}\vert$}
+\State $\phi^t \gets \sum_{i=1}^nw_i/n $\\
+\State $\lambda^t \gets \sum_{i=1}^n(1-w_i)y_i /\left(\sum_{i=1}^n(1-w_i)\right) $\\
+\For{$i \gets 1, n$}
+ 	\If{$y_i =0$}
+  		\State $w_i \gets (1+\exp[-\lambda_i^t -\textnormal{log}(\phi_i^t/(1-\phi_i^t))])^{-1}$ 
+	\Else 
+  		\State $w_i \gets 0$ 
+ 	\EndIf
+\EndFor
+
+\State $t\gets t+1$\\
+\EndWhile
+\State \textbf{return} $\phi^t, \lambda^t$\Comment{The EM algorithm (MLE) estimates}\\
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+The algorithmic description is a formal way of stating the procedure to get the estimates which in essence involves iterating the calculations on lines 9 and 11 and updating the weights ($w_i$) in lines 15 and 17 after a first initialization of the relevant values. For initial values of $\phi^0, \lambda^0$, and $\vec{z}$, we suggest random uniform numbers between 0 and 1 for all three. Note that final values output by the algorithm for $w_i$ and $\phi^t$ will be between 0 and 1 while $\lambda^t$ may be any positive value. Although a while loop with a stopping condition on the successive estimates of the rate and zero-inflation parameters is formally used in the algorithm, often replacing the stopping conditions with $t<10$ or another sufficiently large whole number of iterations is sufficient for many reasonable settings of numerical accuracy ($\varepsilon$). 
+
+A spreadsheet to accompany the manuscript is available to illustrate the necessary calculations as well as provide a working template for the nematologist. The spreadsheet is titled \texttt{zip\_calcs.xlsx} and is available in the supplementary material. In the spreadsheet we use a two significant digit stopping rule and we also calculate the score statistic. The data provided in the spreadsheet are simulated Poisson variates so the score statistic has a large pvalue indicating evidence in favor of the null hypothesis that the data are distributed Poisson. Nonetheless, for illustrative purposes we proceed with the zero-inflated Poisson algorithm calculations so that the reader may study the calculation procedure. Also this example provides evidence that the algorithm provides a reasonable answer in the case of Poisson data, a small ($\phi \approx 0.03$) zero inflation estimate. 
+
+
+
 
 \bibliographystyle{plain}   % this means that the order of references
 			    % is dtermined by the order in which the
