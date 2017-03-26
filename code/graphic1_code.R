@@ -16,24 +16,20 @@ for(i in 1:m){
 z <- rbinom(n,1,prob=p)
 y <-ifelse(z==1, 0, rpois(n,true_lambda))	
 my <- mean(y)
-# get the poisson likelihood
-l_pois <- sum(dpois(y, lambda=my, log=TRUE))
+# get the score statistic
+#l_pois <- ( sum(y==0)+ n*exp(-my))^2 / (n * ( 1 - exp(-my) ) * exp(-my))   )
 # now get the zip likelihood
 zip <- zeroinfl(y~., data = data.frame(y), dist='pois')
 zlambda <- exp(coef(zip)[1]) # zip lambda estimate
 zphi <- 1/(1+exp(-coef(zip)[2]) )# zip phi estimate
-
-zip_like0 <- sum(y==0)*( log(zphi + (1-zphi)*exp(-zlambda)) )
-zip_like_plus <-sum(log(1-zphi)+ dpois(y[y>0],lambda=zlambda, log=TRUE))
-zip <- zip_like0 + zip_like_plus
-xi[i] <- 2*(zip-l_pois)
+score<- (sum(y==0) - n*exp(-my) )^2 / ( n*exp(-my)*(1-exp(-my)) -n*my*exp(-2*my)) 
+xi[i]<-score
 }
-xi[xi<0] <- 0
+
 
 pdf(file='hist.pdf')
-hist(xi, breaks=25, prob=TRUE, main='LR samples', xlab=expression(xi), ylab=expression(Pr(Xi<xi)))
+hist(xi, breaks=25, prob=TRUE, main='Score statistic samples', xlab=expression(xi), ylab=expression(Pr(Xi<xi)))
 seq_line <- dchisq(seq(0,35, by=1), 1, ncp = 0)/2
-seq_line[1] <- 0.5
 lines(seq_line, type='l')
 dev.off()
 
