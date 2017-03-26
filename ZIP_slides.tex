@@ -1,0 +1,494 @@
+\documentclass{beamer} % "Beamer" is a word used in Germany to mean video projector. 
+
+\graphicspath{{figs/}}
+
+\usetheme{Berkeley} % Search online for beamer themes to find your favorite or use the Berkeley theme as in this file.
+
+\usepackage{color} % It may be necessary to set PCTeX or whatever program you are using to output a .pdf instead of a .dvi file in order to see color on your screen.
+\usepackage{graphicx} % This package is needed if you wish to include external image files.
+
+\theoremstyle{definition} % See Lesson Three of the LaTeX Manual for more on this kind of "proclamation."
+
+\title{Why Scientists Should care about zero-inflation and what to do about it}
+\author{Lucas Roberts} 
+\institute{The Hartford Insurance}
+%\date{January 6, 2012} 
+% Remove the % from the previous line and change the date if you want a particular date to be displayed; otherwise, today's date is displayed by default.
+
+\AtBeginSection[]  % The commands within the following {} will be executed at the start of each section.
+{
+\begin{frame} % Within each "frame" there will be one or more "slides."  
+\frametitle{Presentation Outline} % This is the title of the outline.
+\tableofcontents%[currentsection]  % This will display the table of contents and highlight the current section.
+\end{frame}
+} % Do not include the preceding set of commands if you prefer not to have a recurring outline displayed during your presentation.
+
+\begin{document}
+
+\begin{frame} 
+\titlepage
+\end{frame}
+
+\section{Problem Background} % Since this is the start of a new section, our recurring outline will appear here.
+
+\begin{frame} 
+\frametitle{Excess zeroes}
+
+\begin{columns} % This creates a frame with multiple columns.
+\begin{column}{0.5\textwidth} % The first column will be 50% as wide as the width of text on the page.
+Example\\
+\pause 
+$n=100$ observations\\
+\pause
+average of $\bar{y} = 2$ \\
+\pause 
+expect $100\times e^{-2}$ \\
+\pause 
+$\approx 13.5$ zeroes 
+\pause
+\end{column}
+\begin{column}{0.5\textwidth} % The first column will be 50% as wide as the width of text on the page.
+\begin{figure}[htb]
+\includegraphics[width=0.85\textwidth]{rn.jpg}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame} 
+\frametitle{But what if..? }
+\begin{columns} % This creates a frame with multiple columns.
+\begin{column}{0.5\textwidth} % The first column will be 50% as wide as the width of text on the page.
+Example\\
+$n=100$ observations\\
+average of $\bar{y} = 2$ \\
+expect $100\times e^{-2}$ \\
+$\approx 13.5$ zeroes 
+\end{column}
+\begin{column}{0.5\textwidth} 
+You observe: \\
+\pause
+$n=25$ zeroes \\
+\pause
+or $n=50$ zeroes \\
+\pause
+or $n=75$ zeroes \\
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame} 
+\frametitle{Now what? }
+1. We need a method to determine how many zeroes are too many and \\
+\vspace{1in}
+\pause
+2. Need a model that accounts for the excess-or scarcity-of zeroes
+\end{frame}
+
+\begin{frame}
+\frametitle{Take Home Points}
+1. Failing to account for excess zeroes  leads to underestimates (negative bias) of rates. \\
+\pause 
+2. You will never overcome this bias by solely taking more measurements. \\
+\pause 
+3. The fix is (relatively) easy, adjust the model! \\
+\end{frame}
+
+\section{Counting the Species} 
+
+\begin{frame} 
+\frametitle{Some history}
+
+\begin{columns} % This creates a frame with multiple columns.
+\begin{column}{0.5\textwidth} % The first column will be 50% as wide as the width of text on the page.
+Looking at nematode count data for about 3 years\\
+\pause
+My collaborator likes to take measurements \\
+\pause
+We keep seeing zero counts and lots of interesting ways to adjust for excess zeroes\\
+\end{column}
+\begin{column}{0.5\textwidth} % The first column will be 50% as wide as the width of text on the page.
+\begin{figure}[htb]
+\includegraphics[height=1\textwidth]{soil2.jpg}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame} 
+\frametitle{How did I get here II}
+``Everybody knows you just add 1 to everything''\\ 
+\pause
+\vspace{0.5in}
+``$log(1+\text{count})$ and then take an average''\\
+\pause
+\vspace{0.5in}
+``$\sqrt{2\times \text{count}}$ and then take average''\\
+\pause 
+\vspace{0.5in}
+condition on count $>0$ and then take averages\\
+\end{frame}
+
+\begin{frame} 
+\frametitle{How did I get here II}
+\begin{columns} % This creates a frame with multiple columns.
+\begin{column}{0.4\textwidth} % The first column will be 50% as wide as the width of text on the page.
+Not one scientist mentioned\\
+a zero-inflated model. \\
+\vspace{0.5in}
+\pause
+Sometimes the \\
+diffusion of \\
+knowledge takes \\
+time. 
+\end{column}
+\begin{column}{0.5\textwidth} % The first column will be 50% as wide as the width of text on the page.
+\begin{figure}[htb]
+\hspace{-0.4in}\includegraphics[trim={1cm 0 4cm 1cm}, height=1\textwidth]{gill_soil.jpg}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+%Some nematode species are vectors of diseases for plants spreading blight and other pernicious disease. Currently they are impacting rice yields in Cambodia by 30\%. 
+
+\begin{frame}
+\frametitle{Measurements}
+\begin{columns} % This creates a frame with multiple columns.
+\begin{column}{0.5\textwidth} % The first column will be 50% as wide as the width of text on the page.
+Desire to accurately assess the rate of each species in a soil sample. \\
+\vspace{1in}
+\pause
+Rates are used to determine when a region is experiencing an outbreak. \\
+\pause
+\end{column}
+\begin{column}{0.5\textwidth} % The first column will be 50% as wide as the width of text on the page.
+\begin{figure}[htb]
+\hspace{-0.4in}\includegraphics[trim={1cm 0 4cm 1cm}, height=1\textwidth]{elutriator.png}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{The data from a soil lab}
+\begin{columns} % This creates a frame with multiple columns.
+\begin{column}{0.5\textwidth}
+For each sample you have a date of extraction
+\vspace{0.25in}
+\pause 
+and any specifics of that sample\\
+\pause
+\vspace{0.25in}
+Then the counts for each specie
+\vspace{0.25in}  
+\pause
+\end{column}
+\begin{column}{0.5\textwidth} % The first column will be 50% as wide as the width of text on the page.
+\begin{figure}[htb]
+\hspace{-0.4in}\includegraphics[trim={1cm 0 4cm 1cm}, height=1\textwidth]{elutriator.png}
+\end{figure}
+\end{column}
+\end{columns}
+% The command \uncover<m->{STUFF} means that STUFF will appear starting in the mth slide of the frame.
+% The command \uncover<m-n>{STUFF} means that STUFF will appear from the mth slide to the nth slide of the frame.
+\end{frame}
+
+\begin{frame}
+\frametitle{Data}
+\begin{figure}[htb]
+\includegraphics[scale=0.5]{data_2016_nematode.png}
+\end{figure}
+\end{frame}
+
+% Since this is the start of a new section, our recurring outline will appear here.
+
+\section{Statistical aspects} 
+\begin{frame}
+\frametitle{Distributions for count data I}
+\begin{columns} % This creates a frame with multiple columns.
+\begin{column}{0.5\textwidth}
+Often a Poisson \\
+distribution is \\
+used for count data
+
+$ \Pr(Y=y)=
+\exp(-\lambda)\lambda^Y/Y!, \text{if }y\geq0 
+$
+
+\end{column}
+\begin{column}{0.5\textwidth} % The first column will be 50% as wide as the width of text on the page.
+\begin{figure}[htb]
+\hspace{-.45in}\includegraphics[scale=0.35]{pois_pmf.pdf}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Distributions for count data II}
+Typically a zero-inflated Poisson distribution is used for counts with many zeroes
+
+$$ \Pr(Y=y)=
+\begin{cases}
+(1-\phi)\exp(-\lambda)\lambda^Y/Y!, &\text{if }y\neq0 \\
+\phi+(1-\phi)\exp(-\lambda), &\text{if }y=0
+\end{cases}
+$$
+Here $1 > \phi > 0$ and $\lambda >0$.
+\end{frame}
+
+\begin{frame}
+\frametitle{Distributions for count data II(cont)}
+\begin{figure}[htb]
+\hspace{-.45in}\includegraphics[scale=0.35]{zi_pois_pmf.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Distributions for count data III}
+We include a Bernoulli to distinguish amongst zeroes. \\ 
+\vspace{.5in}
+$ \Pr(Y=y, Z=z)=
+\phi^Z\left[(1-\phi)\exp(-\lambda)\lambda^Y/Y! \right]^{1-Z} 
+$ \vspace{.5in}
+Here $1 > \phi > 0$, $\lambda >0$, $y \geq 0$, and $Z \in \{0,1\}$. 
+If $y>0$ then $Z\equiv0$. 
+\end{frame}
+
+\begin{frame}
+\frametitle{Bias}
+What if the data are really zero-inflated? Then, \\
+\pause
+$\mathbb{E}(\bar{y}) = (1-\phi)\lambda$ and the bias is: \\
+\pause
+$\text{bias} = -\phi\lambda$.\\
+\pause
+So that the usual estimate will be too low on average and the bias is larger when the underlying rates are larger. 
+\end{frame}
+
+\begin{frame}
+\frametitle{Variance}
+$
+\mathbb{V}(\bar{Y}) = \frac{\lambda(1-\phi)(1+\phi\lambda)}{n}
+$
+Using the conditional variance formula you can show the variance formula above.
+\end{frame}
+
+\begin{frame}
+\frametitle{Mean squared error}
+Using the bias variance decomposition of mean squared error:
+
+$
+\text{MSE} = \phi^2\lambda^2 + \frac{\lambda(1-\phi)(1+\phi\lambda)}{n}
+$
+So that even if you take a large number of measurements ($n\to \infty$) your conclusion will (on average) be incorrect. 
+\end{frame}
+
+\begin{frame}
+\frametitle{How to decide which model?}
+When to use the zero-inflated Poisson? Use the score test:\\ \vspace{0.25in}
+\pause
+$
+S = \frac{(n_0 - np_0)^2}{np_0(1-p_0) - n\bar{y}p_0^2},
+$
+\vspace{0.25in}
+\pause
+Here $n_0$ is the observed number of zeroes and $p_0$ is the estimated probability of a observed zero in a Poisson distribution. This test statistic is distributed $\chi^2_1$ if the null hypothesis is true (Poisson). 
+\end{frame}
+
+\begin{frame}
+\frametitle{Example}
+Summary Statistics table of $n_0$, $\hat{\lambda}$, and $\bar{y}$.  \\
+
+\begin{table}
+
+\begin{center}
+\begin{tabular}{c | c l c  c  c  c  }
+\hline
+\multicolumn{6}{c}{Species} \\
+\cline{1-6}
+& stunt & spiral & ring  & dagger & rootknot \\
+\hline
+$n$& 144 &144  &144 &144 &144  \\
+$n_0$ &54  & 12 &135 &59 & 121 \\
+$\bar{y}$ &85.93 &264.72  &2.92 & 32.08& 12.33 \\
+$S$ &$3.83\times10^{38}$ &$9.28\times10^{114}$ & $2.64\times10^3$ &$2.07\times10^7$ &$6.28\times10^7$  \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Summary statistics for example zero-inflated Poisson analysis. }
+ \label{tab:table_zip_data}
+\end{table}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Example (cont)}
+Estimates under each regime and observed biases
+\begin{table}
+
+\begin{center}
+\begin{tabular}{c | c l c  c  c  c  }
+\hline
+\multicolumn{6}{c}{Species} \\
+\cline{1-6}
+& stunt & spiral & ring  & dagger & rootknot \\
+\hline
+$n$& 144 &144  &144 &144 &144  \\
+$n_0$ &54  & 12 &135 &59 & 121 \\
+$\bar{y}$ &85.93 &264.72  &2.92 & 32.08& 6.38 \\
+$\hat{\lambda}_z$& $86.79$ & 264.72$$ & $5.99$ & $32.46$ & $7.49$  \\
+$\hat{\phi}$ & $1.1\%$ & $0\%$ & $51.3\%$ & $1.1\%$ & $14.7\%$  \\
+bias & $-0.95$ & $0.00$ & $-3.07$ & $-0.38$ & $-1.10$  \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Summary statistics for example zero-inflated Poisson analysis. }
+ \label{tab:table_zip_data}
+\end{table}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Data}
+\begin{figure}[htb]
+\includegraphics[scale=0.35]{cc_stunt.jpg}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Data}
+\begin{figure}[htb]
+\includegraphics[scale=0.35]{dagger.jpg}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Data}
+\begin{figure}[htb]
+\includegraphics[scale=0.35]{stunt_zero_prob.jpg}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Data}
+\begin{figure}[htb]
+\includegraphics[scale=0.35]{dagger_zero_prob.jpg}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Conclusions I}
+\begin{itemize}
+\item Test for zero-inflation
+\item Use the appropriate model
+\item Incorrect model leads to understating impact
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Conclusions II}
+Policy implications
+\begin{itemize}
+\item Incorrect model leads to understating impact 
+\item You will never collect enough data to correct the error
+\item The bias is proportional to the rate so larger rates imply larger bias 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Conclusions III}
+Policy implications
+\begin{itemize}
+\item Incorporating covariates into the zero-inflation can improve understanding and prediction
+\item Similar form of score test to determine which model is appropriate
+\item Many variations to estimate the ZIP regression model
+\end{itemize}
+\end{frame}
+
+\section{Regression models}
+
+\begin{frame}
+\frametitle{How to decide which model?}
+If you have covariates in a Poisson regression model the test becomes
+$
+\frac{\sum_{i=1}^n(\mathbb{I}(y_i=0)\exp(\lambda_i) - 1)^2}{(\sum_{i=1}^n\mathbb{I}(y_i=0)\exp(\lambda_i) - 1 ) - \vec{\hat{\lambda}}^T \hat{H}\vec{\hat{\lambda}}},
+$
+Here $\hat{H}$ is the projection matrix in the Poisson regression, the $\lambda_i=\exp(\vec{\hat{\beta}\vec{x}_i})$ and $\mathbb{I}(y_i=0)$ is an indicator function taking the value 1 if the condition in the parenthesis is true. 
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{ZIP Regression models I}
+Many approaches to estimation:
+\begin{itemize}
+\item Maximum Likelihood
+\item EM algorithm
+\item Monte Carlo EM
+\item Markov chain Monte Carlo (Metropolis-Hastings)
+%\item Gibbs sampling?
+%\item Variational Bayes?
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{ZIP Regression models II}
+Typically all approaches assume: 
+$\text{log}(\phi/(1-\phi)) = \vec{g}^T\vec{\gamma}$ 
+and \vspace{0.35in}
+$\text{log}(\lambda)=\vec{x}^T\vec{\beta}$
+of course other links are possible but these are the most common. 
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood}
+Substitute equations from previous slide into 
+$$ \Pr(Y=y)=
+\begin{cases}
+(1-\phi)\exp(-\lambda)\lambda^Y/Y!, &\text{if }y\neq0 \\
+\phi+(1-\phi)\exp(-\lambda), &\text{if }y=0
+\end{cases}
+$$
+Here $1 > \phi > 0$ and $\lambda >0$.
+Challenge is non-linear optimization is difficult, may not converge. No standard software implementations exist. 
+\end{frame}
+
+\begin{frame}
+\frametitle{EM algorithm}
+Iterate between expectation step and optimizing step. Optimizing step is two weighted regressions: 
+ \begin{enumerate}
+ \item Poisson with weights $1-w_i$
+ \item Logistic with weights $(1-w_i, w_i)$, $Y^* = (y_i, y_{i_1}, \dots, y_{i_{n_0}}$ similar for covariates $g_i$ 
+\item $W_i = (1+\exp(-\text{log}(\phi_i/(1-\phi_i)) -\lambda_i))^{-1}$ for $i=1, \dots, n$
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{MC-EM algorithm}
+Iterate between MC step and optimizing step. Optimizing step is two regressions: 
+ \begin{enumerate}
+ \item Poisson regression with zeroes where $Z=0$
+ \item Logistic regression with $Z$ response,  
+\item $Z_i \sim \text{Bern}(1+\exp(-\text{log}(\phi^t_i/(1-\phi^t_i)) -\lambda^t_i))^{-1}$ for $i=1, \dots, n$
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{MH algorithm}
+Iterate the following steps. 
+ \begin{enumerate}
+ \item propose $\vec{\beta}^t\sim \text{Normal}(\vec{\beta}^{t-1},\sigma_{\beta}^2)$
+ \item accept $\vec{\beta}^t$ w/prob $1 \wedge \left(\prod_{i=1}^n\frac{\text{Pois}(Y_i \vert e^{\vec{x}_i\vec{\beta}^t}) \pi(\vec{\beta}^t) }{\text{Pois}(Y_i \vert e^{\vec{x}_i\vec{\beta}^{t-1}})\pi(\vec{\beta}^{t-1})} \right)$
+  \item propose $\vec{\gamma}^t\sim \text{Normal}(\vec{\gamma}^{t-1},\sigma_{\gamma}^2)$
+\item accept $\vec{\gamma}^t$ w/prob $1 \wedge \left(\prod_{i=1}^n\frac{\text{Bern}(Z_i^{t-1} \vert p_i) \pi(\vec{\gamma}^t) }{\text{Bern}(Z_i^{t-1} \vert p_i)\pi(\vec{\gamma}^{t-1})} 
+\right)$, where $p_i=(1+e^{\vec{\gamma}^{t-1}g_i})^{-1}$
+\item $Z_i^t \sim \text{Bern}(1+\exp(-\vec{\gamma}^{t}\vec{g}_i -\lambda^t_i))^{-1}$ for $i=1,\dots,n$
+\end{enumerate}
+\end{frame}
+
+
+\end{document} 
+
