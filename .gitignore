@@ -180,4 +180,5 @@ vignettes/*.pdf
 *.pdf 
 *.jpg 
 
-
+# ignore the data files 
+data/*
